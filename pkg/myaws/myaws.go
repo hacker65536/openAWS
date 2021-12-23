@@ -35,24 +35,32 @@ func ListeneRule(arnstr string) string {
 	return url
 }
 
-func OpenS3(s3path string) string {
+func OpenS3(s3args []string) string {
+	u, _ := url.Parse("https://s3.console.aws.amazon.com/s3/")
+	q := u.Query()
+	u.Path = "s3/"
+
+	s3path := s3args[0]
 	r := regexp.MustCompile(`/`)
 	str := r.Split(s3path, 2)
 	log.WithFields(
 		log.Fields{
-			"s3 args": str,
+			"s3args": s3args,
+			"str":     str,
 		}).Debug()
-	u, _ := url.Parse("https://s3.console.aws.amazon.com/s3/")
-	q := u.Query()
-	u.Path = "s3/"
 	if len(str) > 1 {
+		// objects
 		q.Set("prefix", str[1])
 		u.Path += "object/" + str[0]
 	} else {
-		q.Set("tab", "objects")
+		// buckets
 		u.Path += "buckets/" + str[0]
+		q.Set("tab", "objects")
 	}
 
+	if len(s3args) > 1 {
+		q.Set("tab", s3args[1])
+	}
 	u.RawQuery = q.Encode()
 	return u.String()
 }

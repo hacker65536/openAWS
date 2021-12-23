@@ -18,16 +18,20 @@ func TestListeneRule(t *testing.T) {
 
 func TestOpenS3(t *testing.T) {
 	a := []struct {
-		input string
+		input []string
 		want  string
 	}{
 		{
-			input: "cf-templates-xxxxxxxxxxx-ap-northeast-1",
+			input: []string{"cf-templates-xxxxxxxxxxx-ap-northeast-1"},
 			want:  "https://s3.console.aws.amazon.com/s3/buckets/cf-templates-xxxxxxxxxxx-ap-northeast-1?tab=objects",
 		},
 		{
-			input: "cf-templates-xxxxxxxxx-ap-northeast-1/20130701Ac-cf2.txt",
+			input: []string{"cf-templates-xxxxxxxxx-ap-northeast-1/20130701Ac-cf2.txt"},
 			want:  "https://s3.console.aws.amazon.com/s3/object/cf-templates-xxxxxxxxx-ap-northeast-1?prefix=20130701Ac-cf2.txt",
+		},
+		{
+			input: []string{"cf-templates-xxxxxxxxx-ap-northeast-1", "permissions"},
+			want:  "https://s3.console.aws.amazon.com/s3/buckets/cf-templates-xxxxxxxxx-ap-northeast-1?tab=permissions",
 		},
 	}
 
