@@ -50,8 +50,8 @@ builds:
     # Default is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser`.
     ldflags:
       - -s -w
-      - -X github.com/hacker65536/openAWS/cmd.Version={{.Version}} 
-      - -X github.com/hacker65536/openAWS/cmd.GitCommit={{.ShortCommit}} 
+      - -X github.com/hacker65536/{{ .ProjectName }}/cmd.Version={{.Version}} 
+      - -X github.com/hacker65536/{{ .ProjectName }}/cmd.GitCommit={{.ShortCommit}} 
     env: 
       - CGO_ENABLED=0
 
