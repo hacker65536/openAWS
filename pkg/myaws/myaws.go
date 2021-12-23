@@ -1,9 +1,12 @@
-package awselbv2
+package myaws
 
 import (
+	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	log "github.com/sirupsen/logrus"
 )
 
 func ListeneRule(arnstr string) string {
@@ -28,7 +31,28 @@ func ListeneRule(arnstr string) string {
 	url += ";accountId="
 	url += parn.AccountID
 
-	//fmt.Println(url)
+	// fmt.Println(url)
 	return url
+}
 
+func OpenS3(s3path string) string {
+	r := regexp.MustCompile(`/`)
+	str := r.Split(s3path, 2)
+	log.WithFields(
+		log.Fields{
+			"s3 args": str,
+		}).Debug()
+	u, _ := url.Parse("https://s3.console.aws.amazon.com/s3/")
+	q := u.Query()
+	u.Path = "s3/"
+	if len(str) > 1 {
+		q.Set("prefix", str[1])
+		u.Path += "object/" + str[0]
+	} else {
+		q.Set("tab", "objects")
+		u.Path += "buckets/" + str[0]
+	}
+
+	u.RawQuery = q.Encode()
+	return u.String()
 }
