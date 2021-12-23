@@ -33,6 +33,10 @@ func TestOpenS3(t *testing.T) {
 			input: []string{"cf-templates-xxxxxxxxx-ap-northeast-1", "permissions"},
 			want:  "https://s3.console.aws.amazon.com/s3/buckets/cf-templates-xxxxxxxxx-ap-northeast-1?tab=permissions",
 		},
+		{
+			input: []string{"cf-templates-xxxxxxxxx-ap-northeast-1/2021/01/01/"},
+			want:  "https://s3.console.aws.amazon.com/s3/buckets/cf-templates-xxxxxxxxx-ap-northeast-1?prefix=2021%2F01%2F01%2F",
+		},
 	}
 
 	for _, v := range a {

@@ -46,12 +46,17 @@ func OpenS3(s3args []string) string {
 	log.WithFields(
 		log.Fields{
 			"s3args": s3args,
-			"str":     str,
+			"str":    str,
 		}).Debug()
 	if len(str) > 1 {
-		// objects
+		if str[1][len(str[1])-1:len(str[1])] == "/" {
+			// buckets
+			u.Path += "buckets/" + str[0]
+		} else {
+			// objects
+			u.Path += "object/" + str[0]
+		}
 		q.Set("prefix", str[1])
-		u.Path += "object/" + str[0]
 	} else {
 		// buckets
 		u.Path += "buckets/" + str[0]
