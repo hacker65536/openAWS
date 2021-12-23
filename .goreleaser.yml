@@ -1,0 +1,80 @@
+# .goreleaser.yml
+project_name: openAWS
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod tidy
+builds:
+  # You can have multiple builds defined as a yaml list
+  - 
+    # ID of the build.
+    # Defaults to the project name.
+    #id: "my-build"
+
+    # Path to project's (sub)directory containing Go code.
+    # This is the working directory for the Go build command(s).
+    # Default is `.`.
+    #dir: go
+
+    # Path to main.go file or main package.
+    # Notice: when used with `gomod.proxy`, this must be a package.
+    #
+    # Default is `.`.
+    #main: ./cmd/my-app
+
+    # Binary name.
+    # Can be a path (e.g. `bin/app`) to wrap the binary in a directory.
+    # Default is the name of the project directory.
+    #binary: program
+
+    # Custom flags templates.
+    # Default is empty.
+    #flags:
+    #  - -tags=dev
+    #  - -v
+
+    # Custom asmflags templates.
+    # Default is empty.
+    #asmflags:
+    #  - -D mysymbol
+    #  - all=-trimpath={{.Env.GOPATH}}
+
+    # Custom gcflags templates.
+    # Default is empty.
+    #gcflags:
+    #  - all=-trimpath={{.Env.GOPATH}}
+    #  - ./dontoptimizeme=-N
+
+    # Custom ldflags templates.
+    # Default is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser`.
+    ldflags:
+      - -s -w
+      - -X github.com/hacker65536/openAWS/cmd.Version={{.Version}} 
+      - -X github.com/hacker65536/openAWS/cmd.GitCommit={{.ShortCommit}} 
+    env: 
+      - CGO_ENABLED=0
+
+    # GOARCH to build for.
+    # For more info refer to: https://golang.org/doc/install/source#environment
+    # Defaults are 386, amd64 and arm64.
+    goarch:
+      - amd64
+      - arm
+      - arm64
+
+
+    # Optionally override the matrix generation and specify only the final list of targets.
+    # Format is `{goos}_{goarch}` with optionally a suffix with `_{goarm}` or `_{gomips}`.
+    # This overrides `goos`, `goarch`, `goarm`, `gomips` and `ignores`.
+    targets:
+      - linux_amd64
+      - darwin_arm64
+      - darwin_amd64
+      - linux_arm_6
+
+
+    # If true, skip the build.
+    # Useful for library projects.
+    # Default is false
+    skip: false
